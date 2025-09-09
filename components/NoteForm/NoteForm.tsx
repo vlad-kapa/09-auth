@@ -1,7 +1,7 @@
 "use client";
 import css from "./NoteForm.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote, type NewNote } from "@/lib/api";
+import { createNote, type NewNote } from "@/lib/api/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useNoteStore } from "@/lib/store/noteStore";
