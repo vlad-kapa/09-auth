@@ -8,18 +8,10 @@ import { useAuthStore } from "@/lib/store/authStore";
 
 const SignUpPage = () => {
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
-    
-    const formData = new FormData(e.currentTarget);
+  const handleSubmit = async (formData: FormData) => {
     const credentials = Object.fromEntries(formData) as unknown as Credentials;
-    
     try {
       const user = await register(credentials);
       if (user) {
@@ -28,15 +20,12 @@ const SignUpPage = () => {
       }
     } catch (error) {
       setError((error as ApiError).message ?? "something went wrong");
-    } finally {
-      setIsLoading(false);
     }
   };
-
   return (
     <main className={css.mainContent}>
       <h1 className={css.formTitle}>Sign up</h1>
-      <form className={css.form} onSubmit={handleSubmit}>
+      <form className={css.form} action={handleSubmit}>
         <div className={css.formGroup}>
           <label htmlFor="email">Email</label>
           <input
@@ -45,7 +34,6 @@ const SignUpPage = () => {
             name="email"
             className={css.input}
             required
-            disabled={isLoading}
           />
         </div>
 
@@ -57,21 +45,16 @@ const SignUpPage = () => {
             name="password"
             className={css.input}
             required
-            disabled={isLoading}
           />
         </div>
 
         <div className={css.actions}>
-          <button 
-            type="submit" 
-            className={css.submitButton}
-            disabled={isLoading}
-          >
-            {isLoading ? "Registering..." : "Register"}
+          <button type="submit" className={css.submitButton}>
+            Register
           </button>
         </div>
 
-        {error && <p className={css.error}>{error}</p>}
+        {error && <p>{error}</p>}
       </form>
     </main>
   );

@@ -48,7 +48,6 @@ export async function fetchNoteById(id: string) {
   const resp = await nextServer.get<Note>(`/notes/${id}`);
   return resp.data;
 }
-// AUTH LOGIC
 export interface Credentials {
   email: string;
   password: string;
