@@ -7,6 +7,10 @@ import NotesClientPage from "./Notes.client";
 import { Metadata } from "next";
 import { fetchNotes } from "@/lib/api/serverApi";
 
+interface NotesProps {
+  params: Promise<{ slug: string[] }>;
+}
+
 export const generateMetadata = async ({
   params,
 }: NotesProps): Promise<Metadata> => {
