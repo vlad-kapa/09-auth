@@ -1,7 +1,8 @@
 "use client";
 import css from "./NoteForm.module.css";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote, type NewNote } from "@/lib/api/api";
+import { createNote, type NewNote } from "@/lib/api/clientApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useNoteStore } from "@/lib/store/noteStore";
@@ -21,11 +22,16 @@ const NoteForm = () => {
   });
 
   const handleSubmit = (formData: FormData) => {
-    const values = Object.fromEntries(formData) as unknown as NewNote;
+    const values: NewNote = {
+      title: formData.get("title") as string,
+      content: formData.get("content") as string,
+      tag: formData.get("tag") as string,
+    };
+    console.log(values);
     mutation.mutate(values, {
       onSuccess: () => {
-        router.push("/notes/filter/All");
         clearDraft();
+        router.push("/notes/filter/All");
       },
     });
   };
@@ -86,11 +92,12 @@ const NoteForm = () => {
 
       <div className={css.actions}>
         <button
-  onClick={() => router.back()}
-  type="button"
-  className={css.cancelButton}>
-  Cancel
-</button>
+          onClick={() => router.back()}
+          type="button"
+          className={css.cancelButton}
+        >
+          Cancel
+        </button>
         <button type="submit" className={css.submitButton}>
           Create note
         </button>
