@@ -5,10 +5,10 @@ import { User } from "@/types/user";
 
 export const checkServerSession = async () => {
   const cookieStore = await cookies();
-  const responce = await nextServer.get("/auth/session", {
+  const response = await nextServer.get("/auth/session", {
     headers: { Cookie: cookieStore.toString() },
   });
-  return responce;
+  return response;
 };
 
 interface NoteResp {
@@ -27,7 +27,10 @@ export async function fetchNotes(
 ): Promise<NoteResp> {
   const cookieStore = cookies();
   const params: fetchNotesProps = {
-    params: { page, perPage: 12 },
+    params: {
+      page,
+      perPage: 12,
+    },
     headers: { Cookie: cookieStore.toString() },
   };
 
@@ -39,7 +42,7 @@ export async function fetchNotes(
 }
 export const fetchNoteById = async (id: string): Promise<Note> => {
   const cookieStore = await cookies();
-  const response = await nextServer.get<Note>(`notes/${id}`, {
+  const response = await nextServer.get<Note>(`/notes/${id}`, {
     headers: { Cookie: cookieStore.toString() },
   });
 
